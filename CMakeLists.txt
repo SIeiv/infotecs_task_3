@@ -19,6 +19,8 @@ add_executable(infotecs_task_3 main.cpp
         domain/map_of_routes.h
         domain/server_config.cpp
         domain/server_config.h
+        domain/logger.cpp
+        domain/logger.h
 )
 target_link_libraries(infotecs_task_3 PRIVATE httplib)
 

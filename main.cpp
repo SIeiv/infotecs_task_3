@@ -5,6 +5,7 @@
 #include "domain/IO.h"
 #include "domain/map_of_routes.h"
 #include "domain/server_config.h"
+#include "domain/logger.h"
 
 using namespace httplib;
 
@@ -12,7 +13,7 @@ int main() {
     setlocale(LC_ALL, "Russian");
 
     server_config cfg;
-    cfg.IP_ADDRESS = "192.168.0.100";
+    cfg.IP_ADDRESS = "127.0.0.1";
     cfg.PORT = 8080;
     cfg.PATH_TO_LINKS_FILE = "links.txt";
 
@@ -46,9 +47,23 @@ int main() {
 
     Server svr;
 
+    svr.set_logger([](const Request& req, const Response& res) {
+        logger lg;
+        lg.test_log(req, res);
+    });
+
     svr.Get("/", [](const Request &req, Response &res) {
         res.set_content("Main Pages!", "text/plain");
     });
+
+    svr.Post("/add_link", [](const Request &req, Response &res) {
+        std::string val;
+        if (req.has_param("key")) {
+            val = req.get_param_value("key");
+        }
+        res.set_content(val, "text/plain");
+    });
+
 
     for (const auto &[abbreviated, full]: routes) {
         svr.Get(abbreviated, [&full](const Request &req, Response &res) {
@@ -56,12 +71,13 @@ int main() {
         });
     }
 
-    std::thread io_thread([&r]() {
+    /*std::thread io_thread([&r]() {
         IO io(r);
         io.show_initial_msg();
-    });
+    });*/
 
-    printf("Server started on origin: http://%s:%i \n\n", cfg.IP_ADDRESS, cfg.PORT);
+    std::cout << "Server started on origin: http://" << cfg.IP_ADDRESS << ":" << cfg.PORT << std::endl;
+    //printf("Server started on origin: http://%s:%i \n\n", cfg.IP_ADDRESS, cfg.PORT);
     svr.listen(cfg.IP_ADDRESS, cfg.PORT);
     //server_thread.join();
 
