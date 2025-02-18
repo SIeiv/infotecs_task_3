@@ -4,8 +4,12 @@
 
 #include "map_of_routes.h"
 
-void map_of_routes::add_route(std::string abbr, std::string full) {
-    _routes[abbr] = full;
+bool map_of_routes::add_route(std::string abbr, std::string full) {
+    if (!_routes.count(abbr)) {
+        _routes[abbr] = full;
+        return true;
+    }
+    return false;
 }
 
 std::map<std::string, std::string> map_of_routes::get_routes_obj() {

@@ -9,11 +9,13 @@
 
 class logger {
 private:
-    std::string dump_headers(const httplib::Headers &headers);
     static inline int _count = 0;
 public:
-
-    void test_log(const httplib::Request &req, const httplib::Response &res);
+    void start_loading_log();
+    void loading_log(std::string pattern, std::string method);
+    void request_log(const httplib::Request &req, const httplib::Response &res);
+    void request_warn(std::string msg);
+    void loaded_log();
 };
 
 

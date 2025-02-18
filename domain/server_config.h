@@ -9,9 +9,9 @@
 #include <string>
 
 struct server_config {
-    std::string IP_ADDRESS;
-    int PORT;
-    std::string PATH_TO_LINKS_FILE;
+    static inline std::string IP_ADDRESS;
+    static inline int PORT;
+    static inline std::string PATH_TO_LINKS_FILE;
 };
 
 

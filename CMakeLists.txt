@@ -12,15 +12,13 @@ FetchContent_Declare(httplib SYSTEM
 FetchContent_MakeAvailable(httplib)
 
 add_executable(infotecs_task_3 main.cpp
-        domain/IO.h
-        domain/IO.cpp
-        domain/IO_action_types.h
         domain/map_of_routes.cpp
         domain/map_of_routes.h
-        domain/server_config.cpp
         domain/server_config.h
         domain/logger.cpp
         domain/logger.h
+        domain/Utils.cpp
+        domain/Utils.h
 )
 target_link_libraries(infotecs_task_3 PRIVATE httplib)
 

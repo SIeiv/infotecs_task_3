@@ -12,7 +12,7 @@ class map_of_routes {
 private:
     std::map<std::string, std::string> _routes;
 public:
-    void add_route(std::string abbr, std::string full);
+    bool add_route(std::string abbr, std::string full);
     void print_routes();
 
     std::map<std::string, std::string> get_routes_obj();
