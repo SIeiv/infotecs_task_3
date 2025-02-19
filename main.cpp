@@ -7,8 +7,6 @@
 #include "domain/logger.h"
 #include "domain/Utils.h"
 
-using namespace httplib;
-
 int main() {
     //setlocale(LC_ALL, "Russian");
 
@@ -32,21 +30,21 @@ int main() {
 
     auto routes = r.get_routes_obj();
 
-    Server svr;
+    httplib::Server svr;
     logger lg;
 
     lg.start_loading_log();
 
-    svr.set_logger([&lg](const Request &req, const Response &res) {
+    svr.set_logger([&lg](const httplib::Request &req, const httplib::Response &res) {
         lg.request_log(req, res);
     });
 
-    svr.Get("/", [&svr](const Request &req, Response &res) {
+    svr.Get("/", [&svr](const httplib::Request &req, httplib::Response &res) {
         res.set_content("Main Pages!", "text/plain");
     });
     lg.loading_log("/", "GET");
 
-    svr.Post("/add_link", [&r, &svr, &lg](const Request &req, Response &res) {
+    svr.Post("/add_link", [&r, &svr, &lg](const httplib::Request &req, httplib::Response &res) {
         std::string link_val;
         std::string abbr_val;
 
@@ -62,10 +60,7 @@ int main() {
         //тут надо проверку на уже наличие такого сокращения в словаре надо!!!
 
         if (r.add_route(abbr_val, link_val)) {
-            svr.Get(abbr_val, [link_val](const Request &req, Response &res) {
-                res.set_redirect(link_val);
-            });
-            lg.loading_log(abbr_val, "GET");
+            Utils::set_redirector(svr, lg, abbr_val, link_val);
 
             std::ofstream vmdelet_out;                    //создаем поток
             vmdelet_out.open(server_config::PATH_TO_LINKS_FILE,
@@ -84,10 +79,7 @@ int main() {
     lg.loading_log("/add_link", "POST");
 
     for (const auto &[abbreviated, full]: routes) {
-        svr.Get(abbreviated, [&full](const Request &req, Response &res) {
-            res.set_redirect(full);
-        });
-        lg.loading_log(abbreviated, "GET");
+        Utils::set_redirector(svr, lg, abbreviated, full);
     }
 
     lg.loaded_log();

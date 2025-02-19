@@ -45,3 +45,10 @@ std::string Utils::generate_random_abbr(int length) {
     }
     return generated_abbr;
 }
+
+void Utils::set_redirector(httplib::Server &svr, logger &lg, std::string abbr, std::string link) {
+    svr.Get(abbr, [link](const httplib::Request &req, httplib::Response &res) {
+        res.set_redirect(link);
+    });
+    lg.loading_log(abbr, "GET");
+}
