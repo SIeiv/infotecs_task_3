@@ -4,10 +4,11 @@
 
 #include <random>
 #include "Utils.h"
+#include "Logger.h"
 
 std::string Utils::generate_random_abbr(int length) {
-    std::random_device rd; // obtain a random number from hardware
-    std::mt19937 gen(rd()); // seed the generator
+    std::random_device rd;
+    std::mt19937 gen(rd());
 
     std::uniform_int_distribution<> main_distr(0, 2);
 
@@ -15,7 +16,7 @@ std::string Utils::generate_random_abbr(int length) {
     std::uniform_int_distribution<> upper_chars_distr(65, 90);
     std::uniform_int_distribution<> integers_distr(0, 9);
 
-    std::string generated_abbr = "";
+    std::string generated_abbr;
     for(int n = 0; n < length; ++n) {
 
         char generated_ch = 0;
@@ -46,9 +47,11 @@ std::string Utils::generate_random_abbr(int length) {
     return generated_abbr;
 }
 
-void Utils::set_redirector(httplib::Server &svr, logger &lg, std::string abbr, std::string link) {
+void Utils::set_redirector(httplib::Server &svr, Logger &lg, std::string abbr, std::string link) {
     svr.Get(abbr, [link](const httplib::Request &req, httplib::Response &res) {
         res.set_redirect(link);
     });
     lg.loading_log(abbr, "GET");
 }
+
+

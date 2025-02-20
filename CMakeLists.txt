@@ -12,11 +12,11 @@ FetchContent_Declare(httplib SYSTEM
 FetchContent_MakeAvailable(httplib)
 
 add_executable(infotecs_task_3 main.cpp
-        domain/map_of_routes.cpp
-        domain/map_of_routes.h
-        domain/server_config.h
-        domain/logger.cpp
-        domain/logger.h
+        domain/MapOfRoutes.cpp
+        domain/MapOfRoutes.h
+        domain/ServerConfig.h
+        domain/Logger.cpp
+        domain/Logger.h
         domain/Utils.cpp
         domain/Utils.h
 )

@@ -8,12 +8,27 @@
 
 #include <string>
 #include "../httplib.h"
-#include "logger.h"
+#include "Logger.h"
 
+/**
+ * Класс с функциями помощниками
+ */
 class Utils {
 public:
+    /**
+     * Генерация случайного сокращения
+     * @param length Длина сокращения
+     * @return Случайное сокращение заданной длины
+     */
     static std::string generate_random_abbr(int length);
-    static void set_redirector(httplib::Server &svr, logger &lg, std::string abbr, std::string link);
+    /**
+     * Инициализация нового роута с редиректом
+     * @param svr Объект сервера (httplib::Server)
+     * @param lg Объект логгера
+     * @param abbr Сокращение ссылки
+     * @param link Полная ссылка
+     */
+    static void set_redirector(httplib::Server &svr, Logger &lg, std::string abbr, std::string link);
 };
 
 

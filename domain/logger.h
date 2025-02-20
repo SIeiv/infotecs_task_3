@@ -6,15 +6,51 @@
 #define INFOTECS_TASK_3_LOGGER_H
 
 #include "httplib.h"
+#include "ServerConfig.h"
 
-class logger {
+
+/**
+ * Логгирует действия сервера
+ */
+class Logger {
 private:
+    /**
+     * Счётчик запросов
+     */
     static inline int _count = 0;
+    /**
+     * Получение текущего времени
+     * @return время в формате <день_недели> <месяц> <число> чч:мм:сс <год>
+     */
+    static char* get_current_time();
 public:
+    /**
+     * Лог начала загрузки сервера
+     */
     void start_loading_log();
+    /**
+     * Лог начала загрузки сервера
+     */
     void loading_log(std::string pattern, std::string method);
+    /**
+     * Лог начала загрузки сервера
+     * @param req Объект запроса
+     * @param res Объект ответа
+     */
     void request_log(const httplib::Request &req, const httplib::Response &res);
-    void request_warn(std::string msg);
+    /**
+     * Лог ошибки запроса
+     * @param msg Сообщение ошибки
+     */
+    void request_error(std::string msg);
+    /**
+     * Лог исключения
+     * @param msg Сообщение исключения
+     */
+    void exception(std::string msg);
+    /**
+     * Лог конца загрузки сервера
+     */
     void loaded_log();
 };
 
